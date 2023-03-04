@@ -4,16 +4,16 @@ PKGCONFIG	=  pkg-config
 STRIP		?= strip
 
 STATIC		?= 0
-DEBUG		?= 1
+DEBUG		?= 0
 VERBOSE		?= 0
 PROFILE		?= 0
 
 GAME_NAME   ?= SonicMania
-GAME_SUFFIX ?= .so
+GAME_SUFFIX ?= .dylib
 GAME_ALLC   ?= 1
 
-GAME_CFLAGS  =
-GAME_LDFLAGS = -shared
+GAME_CFLAGS  = -arch i386 -arch x86_64
+GAME_LDFLAGS = -shared -dynamiclib -arch i386 -arch x86_64
 GAME_LIBS    =
 
 GAME_PREBUILD =
@@ -57,6 +57,9 @@ GAME_OBJDIR = bin/obj/$(PLATFORM)/$(GAME_NAME)
 
 
 # =============================================================================
+
+CFLAGS += $(GAME_CFLAGS)
+CXXFLAGS += $(GAME_CFLAGS)
 
 CFLAGS ?= $(CXXFLAGS)
 DEFINES += -DBASE_PATH='"$(BASE_PATH)"'
@@ -126,8 +129,7 @@ $(GAME_OBJDIR)/%.o: $(GAME_PREBUILD) %.c
 
 $(GAME_PATH): $(GAME_PRELINK) $(GAME_OBJECTS)
 	@echo linking game...
-	$(CXX) $(CXXFLAGS_ALL) $(LDFLAGS_ALL) $(GAME_LDFLAGS) $(GAME_OBJECTS) $(GAME_LIBS) -o $@ 
- 	$(STRIP) $@
+	$(CXX) $(CXXFLAGS_ALL) $(LDFLAGS_ALL) $(GAME_LDFLAGS) $(GAME_OBJECTS) $(GAME_LIBS) -o $@
 	@echo done linking game
 
 all: $(GAME_POSTLINK) $(GAME_PATH)

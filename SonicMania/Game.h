@@ -11,7 +11,7 @@
 // -------------------------
 
 #ifndef RETRO_REVISION
-#define RETRO_REVISION (3)
+#define RETRO_REVISION (2)
 #endif
 
 #define RETRO_REV01 (RETRO_REVISION == 1)
@@ -32,7 +32,7 @@
 #endif
 
 #ifndef RETRO_USE_MOD_LOADER
-#define RETRO_USE_MOD_LOADER (1)
+#define RETRO_USE_MOD_LOADER (0)
 #endif
 
 #ifndef RETRO_MOD_LOADER_VER
