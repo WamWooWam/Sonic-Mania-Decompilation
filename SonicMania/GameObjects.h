@@ -11,7 +11,7 @@
 // OBJECTS
 // -------------------------
 
-#include "All.h"
+#include "Objects/All.h"
 
 #if RETRO_REV02
 DLLExport void LinkGameLogicDLL(EngineInfo *info);
