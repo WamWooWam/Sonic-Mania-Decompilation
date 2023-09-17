@@ -470,6 +470,7 @@ void InitPublicFunctions()
     ADD_PUBLIC_FUNC(ChemicalPool_State_Changing);
 
     // CPZ/CPZ1Intro
+    ADD_PUBLIC_FUNC(CPZ1Intro_SetupCutscene);
     ADD_PUBLIC_FUNC(CPZ1Intro_Particle_ChemDrop);
     ADD_PUBLIC_FUNC(CPZ1Intro_HandleRubyHover);
     ADD_PUBLIC_FUNC(CPZ1Intro_CheckSonicAnimFinish);
@@ -709,6 +710,8 @@ void InitPublicFunctions()
     ADD_PUBLIC_FUNC(CutsceneSeq_NewState);
 #if MANIA_USE_PLUS
     ADD_PUBLIC_FUNC(CutsceneSeq_CheckSkip);
+    ADD_PUBLIC_FUNC(CutsceneSeq_SetSkipType);
+    ADD_PUBLIC_FUNC(CutsceneSeq_SetSkipTypeCallback);
 #endif
     ADD_PUBLIC_FUNC(CutsceneSeq_GetEntity);
     ADD_PUBLIC_FUNC(CutsceneSeq_LockPlayerControl);
@@ -855,7 +858,7 @@ void InitPublicFunctions()
     ADD_PUBLIC_FUNC(ERZStart_Cutscene_ShrinkRubyWarpFX);
     ADD_PUBLIC_FUNC(ERZStart_Cutscene_EnterKing);
     ADD_PUBLIC_FUNC(ERZStart_Cutscene_KingMovingRuby);
-    ADD_PUBLIC_FUNC(ERZStart_Cutscene_KingAttatchHornRuby);
+    ADD_PUBLIC_FUNC(ERZStart_Cutscene_KingAttachHornRuby);
     ADD_PUBLIC_FUNC(ERZStart_Cutscene_SetupEggmanReveal);
     ADD_PUBLIC_FUNC(ERZStart_Cutscene_EnterEggman);
     ADD_PUBLIC_FUNC(ERZStart_Cutscene_EggmanKingWrestling);
@@ -980,6 +983,7 @@ void InitPublicFunctions()
 
     // ERZ/PhantomKing
     ADD_PUBLIC_FUNC(PhantomKing_CheckPlayerCollisions);
+    ADD_PUBLIC_FUNC(PhantomKing_Oscillate);
     ADD_PUBLIC_FUNC(PhantomKing_Hit);
     ADD_PUBLIC_FUNC(PhantomKing_Explode);
     ADD_PUBLIC_FUNC(PhantomKing_HandleFrames);
@@ -1908,6 +1912,7 @@ void InitPublicFunctions()
     ADD_PUBLIC_FUNC(Player_HurtFlip);
     ADD_PUBLIC_FUNC(Player_ElementHurt);
     ADD_PUBLIC_FUNC(Player_CheckAttacking);
+    ADD_PUBLIC_FUNC(Player_CheckAttackingNoInvTimer);
     ADD_PUBLIC_FUNC(Player_CheckBadnikTouch);
     ADD_PUBLIC_FUNC(Player_CheckBadnikBreak);
     ADD_PUBLIC_FUNC(Player_CheckBossHit);
@@ -2132,7 +2137,7 @@ void InitPublicFunctions()
 
     // Global/Spikes
     ADD_PUBLIC_FUNC(Spikes_Draw_Global);
-    ADD_PUBLIC_FUNC(Spikes_Draw_Stage);
+    ADD_PUBLIC_FUNC(Spikes_Draw_Glint);
     ADD_PUBLIC_FUNC(Spikes_Shatter);
 #if MANIA_USE_PLUS
     ADD_PUBLIC_FUNC(Spikes_CheckHit);
@@ -3975,7 +3980,7 @@ void InitPublicFunctions()
     ADD_PUBLIC_FUNC(BuzzSaw_SfxCheck_SawSus);
     ADD_PUBLIC_FUNC(BuzzSaw_SfxUpdate_SawSus);
     ADD_PUBLIC_FUNC(BuzzSaw_CheckPlayerCollisions);
-    ADD_PUBLIC_FUNC(BuzzSaw_State_Attatched);
+    ADD_PUBLIC_FUNC(BuzzSaw_State_Attached);
     ADD_PUBLIC_FUNC(BuzzSaw_State_Stray_Waiting);
     ADD_PUBLIC_FUNC(BuzzSaw_State_Stray_Released);
     ADD_PUBLIC_FUNC(BuzzSaw_State_FreeMove_Reset);
@@ -4062,8 +4067,8 @@ void InitPublicFunctions()
     ADD_PUBLIC_FUNC(Gachapandora_StateDebris_Falling);
     ADD_PUBLIC_FUNC(Gachapandora_StateDebris_BossDebris);
     ADD_PUBLIC_FUNC(Gachapandora_Draw_BossDebris);
-    ADD_PUBLIC_FUNC(Gachapandora_StateSpark_Attatched);
-    ADD_PUBLIC_FUNC(Gachapandora_StateSpark_Detatched);
+    ADD_PUBLIC_FUNC(Gachapandora_StateSpark_Attached);
+    ADD_PUBLIC_FUNC(Gachapandora_StateSpark_Detached);
     ADD_PUBLIC_FUNC(Gachapandora_StateEggman_Falling);
     ADD_PUBLIC_FUNC(Gachapandora_StateEggman_Escape);
     ADD_PUBLIC_FUNC(Gachapandora_StateEggman_RunAway);
@@ -4312,15 +4317,15 @@ void InitPublicFunctions()
     ADD_PUBLIC_FUNC(HeavyMystic_StateBoss_AwaitBoxClosing);
     ADD_PUBLIC_FUNC(HeavyMystic_StateBoss_AwaitBoxClosed);
     ADD_PUBLIC_FUNC(HeavyMystic_StateBoss_Transforming);
-    ADD_PUBLIC_FUNC(HeavyMystic_StateBoss_ShowRouge);
+    ADD_PUBLIC_FUNC(HeavyMystic_StateBoss_ShowRogue);
     ADD_PUBLIC_FUNC(HeavyMystic_StateBoss_MysticReveal);
     ADD_PUBLIC_FUNC(HeavyMystic_StateBoss_MoveToBoxY);
     ADD_PUBLIC_FUNC(HeavyMystic_StateBoss_MoveToBoxX);
-    ADD_PUBLIC_FUNC(HeavyMystic_StateBoss_TransformBackIntoRouge);
+    ADD_PUBLIC_FUNC(HeavyMystic_StateBoss_TransformBackIntoRogue);
     ADD_PUBLIC_FUNC(HeavyMystic_StateBoss_FangIdle);
     ADD_PUBLIC_FUNC(HeavyMystic_StateBoss_FangTell);
     ADD_PUBLIC_FUNC(HeavyMystic_StateBoss_FangHop);
-    ADD_PUBLIC_FUNC(HeavyMystic_StateBoss_RougeHit);
+    ADD_PUBLIC_FUNC(HeavyMystic_StateBoss_RogueHit);
     ADD_PUBLIC_FUNC(HeavyMystic_StateBoss_BarkIdle);
     ADD_PUBLIC_FUNC(HeavyMystic_StateBoss_BarkPounding);
     ADD_PUBLIC_FUNC(HeavyMystic_StateBoss_BarkJump);
@@ -4380,7 +4385,7 @@ void InitPublicFunctions()
     ADD_PUBLIC_FUNC(MSZCutsceneST_Cutscene_AwaitActFinish);
     ADD_PUBLIC_FUNC(MSZCutsceneST_Cutscene_EnterMystic);
     ADD_PUBLIC_FUNC(MSZCutsceneST_Cutscene_PrepareAmbush);
-    ADD_PUBLIC_FUNC(MSZCutsceneST_Cutscene_RougesAmbush);
+    ADD_PUBLIC_FUNC(MSZCutsceneST_Cutscene_RoguesAmbush);
     ADD_PUBLIC_FUNC(MSZCutsceneST_Cutscene_ShowFang);
     ADD_PUBLIC_FUNC(MSZCutsceneST_Cutscene_ShowBean);
     ADD_PUBLIC_FUNC(MSZCutsceneST_Cutscene_ShowBark);
@@ -6044,9 +6049,10 @@ void InitPublicFunctions()
     ADD_PUBLIC_FUNC(SpikeFlail_GetScale);
 
     // SSZ/SSZ1Intro
+    ADD_PUBLIC_FUNC(SSZ1Intro_SetupCutscene);
     ADD_PUBLIC_FUNC(SSZ1Intro_HandleRubyHover);
     ADD_PUBLIC_FUNC(SSZ1Intro_Cutscene_FinishRubyWarp);
-    ADD_PUBLIC_FUNC(SSZ1Intro_Cutscene_HandeLanding);
+    ADD_PUBLIC_FUNC(SSZ1Intro_Cutscene_HandleLanding);
     ADD_PUBLIC_FUNC(SSZ1Intro_Cutscene_BeginAct1);
 
     // SSZ/SSZ1Outro
