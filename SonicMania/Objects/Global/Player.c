@@ -168,7 +168,7 @@ void Player_LateUpdate(void)
 
 #if MANIA_USE_PLUS
         if (!self->sidekick)
-            RSDK.CopyEntity(Zone->entityStorage[1], self, false);
+            RSDK.CopyEntity(&Zone->entityStorage[1], self, false);
 #endif
 
         bool32 stopInvincibility = self->sidekick || globals->gameMode == MODE_COMPETITION;
@@ -3410,9 +3410,9 @@ bool32 Player_SwapMainPlayer(bool32 forceSwap)
                 destroyEntity(ice);
         }
     }
-    RSDK.CopyEntity(Zone->entityStorage, leader, false);
+    RSDK.CopyEntity(&Zone->entityStorage[0], leader, false);
     RSDK.CopyEntity(leader, sidekick, false);
-    RSDK.CopyEntity(sidekick, (Entity *)Zone->entityStorage, false);
+    RSDK.CopyEntity(sidekick, &Zone->entityStorage[0], false);
 
     sidekick->state       = Player_State_Air;
     self->controllerID    = sidekick->controllerID;
@@ -5135,22 +5135,7 @@ void Player_State_KnuxWallClimb(void)
             if (RSDK.ObjectTileCollision(self, self->collisionLayers, CMODE_ROOF, self->collisionPlane, roofX, roofY, true))
                 self->velocity.y = 0;
 
-            if (collidedHigh && collidedLow) {
-                if (!self->velocity.y)
-                    RSDK.SetSpriteAnimation(self->aniFrames, ANI_CLIMB_IDLE, &self->animator, false, 0);
-                else if (self->velocity.y > 0)
-                    RSDK.SetSpriteAnimation(self->aniFrames, ANI_CLIMB_DOWN, &self->animator, false, 0);
-                else if (self->velocity.y < 0)
-                    RSDK.SetSpriteAnimation(self->aniFrames, ANI_CLIMB_UP, &self->animator, false, 0);
-
-                self->velocity.y = 0;
-            }
-            else if (collidedHigh) {
-                RSDK.SetSpriteAnimation(self->aniFrames, ANI_GLIDE_DROP, &self->animator, false, 2);
-                self->velocity.y = 0;
-                self->state      = Player_State_KnuxGlideDrop;
-            }
-            else if (collidedLow) {
+            if (!collidedHigh) {
                 self->position.y &= 0xFFF00000;
                 if (self->isChibi)
                     self->position.y -= 0x10000;
@@ -5163,6 +5148,21 @@ void Player_State_KnuxWallClimb(void)
                 self->timer          = 1;
                 self->tileCollisions = TILECOLLISION_NONE;
                 self->velocity.y     = 0;
+            }
+            else if (!collidedLow) {
+                RSDK.SetSpriteAnimation(self->aniFrames, ANI_GLIDE_DROP, &self->animator, false, 2);
+                self->velocity.y = 0;
+                self->state      = Player_State_KnuxGlideDrop;
+            }
+            else {
+                if (!self->velocity.y)
+                    RSDK.SetSpriteAnimation(self->aniFrames, ANI_CLIMB_IDLE, &self->animator, false, 0);
+                else if (self->velocity.y > 0)
+                    RSDK.SetSpriteAnimation(self->aniFrames, ANI_CLIMB_DOWN, &self->animator, false, 0);
+                else if (self->velocity.y < 0)
+                    RSDK.SetSpriteAnimation(self->aniFrames, ANI_CLIMB_UP, &self->animator, false, 0);
+
+                self->velocity.y = 0;
             }
         }
     }
@@ -5553,7 +5553,7 @@ void Player_State_FlyToPlayer(void)
         leader = RSDK_GET_ENTITY(SLOT_PLAYER1, Player);
 #if MANIA_USE_PLUS
     else
-        leader = (EntityPlayer *)Zone->entityStorage[1];
+        leader = (EntityPlayer *)&Zone->entityStorage[1];
 #endif
 
     Player->respawnTimer = 0;
@@ -5722,7 +5722,7 @@ void Player_State_ReturnToPlayer(void)
         leader = RSDK_GET_ENTITY(SLOT_PLAYER1, Player);
 #if MANIA_USE_PLUS
     else
-        leader = (EntityPlayer *)Zone->entityStorage[1];
+        leader = (EntityPlayer *)&Zone->entityStorage[1];
 #endif
 
     RSDK.SetSpriteAnimation(self->aniFrames, ANI_JUMP, &self->animator, false, 0);
